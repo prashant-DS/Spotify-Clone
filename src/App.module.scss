@@ -1,0 +1,18 @@
+.mainContainer{
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    button{
+        transition:box-shadow 250ms ease;
+        &:focus,&:hover{
+            outline: 0;
+            box-shadow: 0 0 3pt 2pt #F1B24A;  
+        }
+        &:disabled{
+            box-shadow: none;
+            cursor:wait;
+        }
+        
+    }
+}

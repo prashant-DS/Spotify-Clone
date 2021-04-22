@@ -1,0 +1,74 @@
+.base{
+    position: fixed;
+    top:10%;
+    left:17%;
+    width:83%;
+    height: 80%;
+    background-color:rgb(18,18,18);
+    box-sizing: border-box;
+    font-family: spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,helvetica,arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;
+    // font-size: 14px;
+    // font-weight: 700;
+    // line-height: 16px;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #fff;
+    overflow: auto;
+    
+    &::-webkit-scrollbar{
+        width:0px
+    }
+}
+
+.homePage{
+    @extend .base;
+}
+
+.FullScreenSectionPage{
+    @extend .base;
+}
+
+.playlistPage{
+    @extend .base;
+}
+
+.albumPage{
+    @extend .base;
+}
+
+.artistPage{
+    @extend .base;
+}
+
+.categoryPage{
+    @extend .base;
+}
+
+.loading{
+    position: relative;
+    width: 100%;
+    top: 25%;
+    height: 50%;
+}
+
+.login{
+    img{
+        width:100%;
+    }
+
+    p{
+        text-align: center;
+        font-family: circular-spotify-ui,Helvetica Neue,Helvetica,Arial,sans-serif;
+        font-size: 25px;
+        letter-spacing: 2px;
+        
+
+        a{
+            text-decoration: none;
+            color: #fff;
+            background-color: #1db954;
+            padding: 15px 100px;
+            border-radius: 50px;
+        }
+    }
+}
