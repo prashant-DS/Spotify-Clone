@@ -1,7 +1,7 @@
 import React,{useEffect,useRef} from 'react';
 import {useSelector,useDispatch} from 'react-redux';
 import { useParams } from 'react-router-dom';
-// import ColorThief from 'color-thief';
+import { average } from "color.js";
 
 import loadingImg from '../../assests/loading.svg';
 import baseStyle from '../Style.module.scss';
@@ -35,7 +35,7 @@ function ArtistPage() {
             dispatch(setHeaderBgcolor("rgb(18,18,18)"));
         }
 
-    },[artistID])
+    },[artistID, dispatch])
 
     useEffect(()=>{
         if(!artistDetails)
@@ -53,23 +53,22 @@ function ArtistPage() {
     const introdivRef = useRef(null);
     const buttondivRef = useRef(null);
 
-    const setbgcolor = ()=>{
-        // const colorThief = new ColorThief();
-        // const colArr = colorThief.getColor(imageRef.current);
-        // if(colArr)
-        // {
-        //     const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
-        //     dispatch(setHeaderBgcolor(col));
-        //     introdivRef.current.style.backgroundColor = col;
-        //     buttondivRef.current.style.backgroundColor = col;
-        // }
+    const setbgcolor = async()=>{
+        const colArr = await average(imageRef.current);
+        if(colArr)
+        {
+            const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
+            dispatch(setHeaderBgcolor(col));
+            introdivRef.current.style.backgroundColor = col;
+            buttondivRef.current.style.backgroundColor = col;
+        }
         
     }
 
     return(
         <div className={baseStyle.artistPage}>
             {
-                artistDetails===undefined ? <img className={baseStyle.loading} src={loadingImg}/> :<>
+                artistDetails===undefined ? <img className={baseStyle.loading} src={loadingImg} alt='Loading'/> :<>
                     <div className={Style.introdiv} ref={introdivRef}>
                         <img src={artistDetails.images.length>0?artistDetails.images[0].url:singerLogo} alt={artistDetails.name} ref={imageRef} onLoad={setbgcolor} crossorigin="anonymous"/>
                         <div>

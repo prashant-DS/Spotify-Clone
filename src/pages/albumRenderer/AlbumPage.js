@@ -1,7 +1,7 @@
 import React,{useEffect,useRef} from 'react'
 import {useSelector,useDispatch} from 'react-redux';
 import { useParams,Link } from 'react-router-dom';
-// import ColorThief from 'color-thief';
+import { average } from "color.js";
 
  import baseStyle from '../Style.module.scss';
  import Style from './Style.module.scss';
@@ -33,25 +33,24 @@ function AlbumPage() {
             dispatch(setHeaderBgcolor("rgb(18,18,18)"));
         }
 
-    },[])
+    },[accessToken, albumDetails, albumID, dispatch])
 
     const imageRef = useRef(null);
     const introdivRef = useRef(null);
     const buttondivRef = useRef(null);
 
-    const setbgcolor = ()=>{
-        // const colorThief = new ColorThief();
-        // const colArr = colorThief.getColor(imageRef.current);
-        // const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
-        // dispatch(setHeaderBgcolor(col));
-        // introdivRef.current.style.backgroundColor = col;
-        // buttondivRef.current.style.backgroundColor = col;
+    const setbgcolor = async()=>{
+        const colArr = await average(imageRef.current);
+        const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
+        dispatch(setHeaderBgcolor(col));
+        introdivRef.current.style.backgroundColor = col;
+        buttondivRef.current.style.backgroundColor = col;
     }
 
     return(
         <div className={baseStyle.albumPage}>
             {
-                albumDetails===undefined ? <img className={baseStyle.loading} src={loadingImg}/> :<>
+                albumDetails===undefined ? <img className={baseStyle.loading} src={loadingImg} alt='Loading'/> :<>
                     <div className={Style.introdiv} ref={introdivRef}>
                         <img src={albumDetails.images[2].url} alt={albumDetails.name} ref={imageRef} onLoad={setbgcolor} crossorigin="anonymous"/>
                         <div>

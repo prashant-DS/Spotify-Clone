@@ -1,10 +1,11 @@
 import React,{useEffect,useRef} from 'react'
 import {useSelector,useDispatch} from 'react-redux';
 import { useParams } from 'react-router-dom';
-// import ColorThief from 'color-thief';
+import { average } from "color.js";
 
- import baseStyle from '../Style.module.scss';
- import Style from './Style.module.scss';
+
+import baseStyle from '../Style.module.scss';
+import Style from './Style.module.scss';
 import {
     fetchPlaylist,
 } from '../../state/ducks/userCollection';
@@ -31,20 +32,18 @@ function PlaylistPage() {
         return()=>{
             dispatch(setHeaderBgcolor("rgb(18,18,18)"));
         }
-
-    },[])
+    },[accessToken, country, dispatch, playlistDetails, playlistID])
 
     const imageRef = useRef(null);
     const introdivRef = useRef(null);
     const buttondivRef = useRef(null);
 
-    const setbgcolor = ()=>{
-        // const colorThief = new ColorThief();
-        // const colArr = colorThief.getColor(imageRef.current);
-        // const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
-        // dispatch(setHeaderBgcolor(col));
-        // introdivRef.current.style.backgroundColor = col;
-        // buttondivRef.current.style.backgroundColor = col;
+    const setbgcolor = async()=>{
+        const colArr = await average(imageRef.current);
+        const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
+        dispatch(setHeaderBgcolor(col));
+        introdivRef.current.style.backgroundColor = col;
+        buttondivRef.current.style.backgroundColor = col;
     }
 
     return(

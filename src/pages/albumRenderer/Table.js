@@ -1,4 +1,4 @@
-import React, { useRef,useEffect } from 'react'
+    import React, { useRef,useEffect } from 'react'
 import {Link} from 'react-router-dom';
 
 import Style from './Style.module.scss';
@@ -10,7 +10,7 @@ function Table({songs}) {
 
     const checkHeaderSticky = () =>{
         let limit = (window.screen.height/10)+1;
-        headerRef.current.parentElement.classList.toggle(`${Style.sticked}`,headerRef.current.getBoundingClientRect().y <= limit);
+        headerRef?.current?.parentElement.classList.toggle(`${Style.sticked}`,headerRef.current.getBoundingClientRect().y <= limit);
         
     }
     // let par=undefined;
