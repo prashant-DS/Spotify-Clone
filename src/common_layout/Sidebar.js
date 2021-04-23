@@ -54,7 +54,7 @@ function Sidebar() {
 
             <hr/>
 
-            <div>
+            <div className={Style.playListsHolder}>
                 {
                     playlists.map(item=><Link to={`/playlist/${item.id}`}>
                         <div className={Style.sidebarNavigationLinks}>
