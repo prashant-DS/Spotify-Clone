@@ -3,7 +3,7 @@
     top:10%;
     left:17%;
     width:83%;
-    height: 80%;
+    height: 77%;
     background-color:rgb(18,18,18);
     box-sizing: border-box;
     font-family: spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,helvetica,arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;
@@ -13,7 +13,8 @@
     letter-spacing: normal;
     text-transform: none;
     color: #fff;
-    overflow: auto;
+    overflow: auto; 
+    z-index: -10;
     
     &::-webkit-scrollbar{
         width: 12px;
@@ -66,7 +67,7 @@
         width:100%;
     }
 
-    p{
+    pre{
         text-align: center;
         font-family: circular-spotify-ui,Helvetica Neue,Helvetica,Arial,sans-serif;
         font-size: 25px;
@@ -74,7 +75,7 @@
         
 
         a{
-            text-decoration: none;
+            text-decoration:none;
             color: #fff;
             background-color: #1db954;
             padding: 15px 100px;

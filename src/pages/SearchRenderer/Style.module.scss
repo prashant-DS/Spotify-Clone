@@ -24,4 +24,14 @@
     font-size: 0.9em;
     font-family: inherit;
 
+    transition:box-shadow 250ms ease;
+    &:focus,&:hover{
+        outline: 0;
+        box-shadow: 0 0 3pt 1pt #F1B24A;  
+    }
+    &:disabled{
+        box-shadow: none;
+        cursor:wait;
+    }
+
 }

@@ -12,6 +12,7 @@ import baseStyle from '../Style.module.scss';
 function Login() {
 
     const dispatch = useDispatch();
+    const show_login_dialog = useSelector(state=>state.authentication.show_login_dialog);
     let logged=useSelector(state=>state.authentication.isUserLoggedIn);
     let accessToken =useSelector(state=>state.authentication.token.access_token);
 
@@ -34,16 +35,16 @@ function Login() {
             return;
         let hash=getTokenFromUrl();
         dispatch(userLogin(hash));
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if(logged){
             dispatch(fetchUserProfile(accessToken));
         }
-    }, [logged])
+    }, [accessToken, dispatch, logged])
 
 
-    const authURL=`https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${redirect_uri}&scope=${scopes.join('%20')}&show_dialog=false`;
+    const authURL=`https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${redirect_uri}&scope=${scopes.join('%20')}&show_dialog=${show_login_dialog}`;
 
     if(logged){
         return(
@@ -52,10 +53,9 @@ function Login() {
     }   
     return (
         <div className={baseStyle.login}>
-            <img src={logo}  />
-            {/* <h1>Spotify</h1> */}
+            <img src={logo} alt='Spotify' />
             
-            <p><a href={authURL}>Login With Spotify</a></p>
+            <pre><a href={authURL}>Login With Spotify</a></pre>
         </div>
     )
 }
