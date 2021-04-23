@@ -8,7 +8,7 @@
     .cardsContainer{
         display: flex;
         flex-wrap: wrap;
-        gap:20px;
+        gap:27px;
         // height: 300px;
         // border:2px solid blue;
         align-items: center;
@@ -71,13 +71,16 @@
     background: #181818;
     border-radius: 4px;
     // height: 80%;
-    max-width:165px;
+    max-width:190px;
+    // min-width: 180px;
     cursor: pointer;
     transition: background-color .3s ease;
+    // flex-grow: 1;
+    box-sizing: border-box;
     
     img{
-        height:166px;
-        width:166px;
+        height:158px;
+        width:158px;
         object-fit: fill;
     }
     .primary{
