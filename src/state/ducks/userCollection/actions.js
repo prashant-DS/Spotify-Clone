@@ -3,6 +3,7 @@ import axios from 'axios';
 import{
     SET_USER_PLAYLIST_COLLECTION,
     SET_USER_FOLLOWING_ARTISTS,
+    SET_USER_ISFOLLOWING_STATUS,
     SET_USER_BROWSE_NEWRELEASES,
     SET_USER_BROWSE_FEATUREDPLAYLISTS,
     SET_USER_BROWSE_CATEGORIES,
@@ -29,6 +30,15 @@ export const setUserFollowingArtists = artists =>{
         type:SET_USER_FOLLOWING_ARTISTS,
         payload:{
             artists
+        }
+    }
+}
+
+export const setUserIsFollowingStatus = (id,val) =>{
+    return{
+        type:SET_USER_ISFOLLOWING_STATUS,
+        payload:{
+            [id]:val,
         }
     }
 }
@@ -121,7 +131,7 @@ export const addSaveddataArtistAlbums = (id,data) =>{
 //--------------------------------------------------------------
 
 
-export const fetchUserPlaylistCollection = (accessToken,offset=0,limit=10) =>{
+export const fetchUserPlaylistCollection = (accessToken,offset=0,limit=20) =>{
     return (dispatch)=>{
         axios.get(`https://api.spotify.com/v1/me/playlists?limit=${limit}&offset=${offset}`,{
             'headers': { 
@@ -151,6 +161,51 @@ export const fetchUserFollowingArtists = (accessToken,lastFetchedArtistID='',lim
             // console.log(res.data.artists.items);
             if(res.data.artists.items.length > 0)
                 dispatch(setUserFollowingArtists(res.data.artists.items));
+        }).catch(err=>{
+            console.log(err);   
+        })
+    }
+}
+
+export const fetchUserIsFollowingPlaylist = (accessToken,userId,playlistId) =>{
+    return (dispatch)=>{
+        axios.get(`https://api.spotify.com/v1/playlists/${playlistId}/followers/contains?ids=${userId}`,{
+            'headers': { 
+                'Authorization': `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('check',res.data[0]);
+            dispatch(setUserIsFollowingStatus(playlistId,res.data[0]));
+        }).catch(err=>{
+            console.log(err);   
+        })
+    }
+}
+
+export const fetchUserIsFollowingAlbum = (accessToken,albumId) =>{
+    return (dispatch)=>{
+        axios.get(`https://api.spotify.com/v1/me/albums/contains?ids=${albumId}`,{
+            'headers': { 
+                'Authorization': `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('check',res.data[0]);
+            dispatch(setUserIsFollowingStatus(albumId,res.data[0]));
+        }).catch(err=>{
+            console.log(err);   
+        })
+    }
+}
+
+export const fetchUserIsFollowingArtist = (accessToken,artistId) =>{
+    return (dispatch)=>{
+        axios.get(`https://api.spotify.com/v1/me/following/contains?type=artist&ids=${artistId}`,{
+            'headers': { 
+                'Authorization': `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('check',res.data[0]);
+            dispatch(setUserIsFollowingStatus(artistId,res.data[0]));
         }).catch(err=>{
             console.log(err);   
         })

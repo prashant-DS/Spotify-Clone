@@ -30,16 +30,13 @@ function HomePage() {
     useEffect(() => {
         dispatch(fetchUserPlaylistCollection(accessToken,userPlaylists.length));
         let len=userFollowingArtists.length;
-        if(len < 5){
-            if(len===0)
-                dispatch(fetchUserFollowingArtists(accessToken));
-            else
-                dispatch(fetchUserFollowingArtists(accessToken,userFollowingArtists[len-1].id));
-        }
+        if(len===0)
+            dispatch(fetchUserFollowingArtists(accessToken));
+        else
+            dispatch(fetchUserFollowingArtists(accessToken,userFollowingArtists[len-1].id));
     }, [accessToken])
 
     useEffect(()=>{
-        console.error(country);
         if(country){
             if(browse.newReleases.length < 5)
                 dispatch(fetchUserBrowseNewReleases(country,browse.newReleases.length,5,accessToken));
@@ -48,7 +45,7 @@ function HomePage() {
             if(browse.categories.length < 5)
                 dispatch(fetchUserBrowseCategories(country,browse.categories.length,5,accessToken));
         }
-    },[country])
+    },[country,accessToken])
 
     useEffect(() => {
         if(country){

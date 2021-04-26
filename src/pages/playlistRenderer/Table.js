@@ -1,6 +1,7 @@
 import React, { useRef,useEffect } from 'react'
 import {Link} from 'react-router-dom';
 
+import defaultAlbumImage from '../../assests/album.svg';
 import Style from './Style.module.scss';
 
 function Table({songs}) {
@@ -59,7 +60,7 @@ function Table({songs}) {
                             <td></td>
                             <td>
                                 <div className={Style.titlediv}>
-                                    <img src={song.track.album.images[song.track.album.images.length -1].url} width="40px" height="40px" draggable="false" alt=""/>
+                                    <img src={song.track.album.images.length>0 ? song.track.album.images[song.track.album.images.length -1].url : defaultAlbumImage} width="40px" height="40px" draggable="false" alt=""/>
                                     <div>
                                         <span className={Style.highlighted}>{song.track.name}</span>
                                         <br/>
@@ -82,7 +83,12 @@ function Table({songs}) {
                                     
                                 </div>
                             </td>
-                            <td><Link to={`/album/${song.track.album.id}`}><span>{song.track.album.name}</span></Link></td>
+                            <td>
+                            {
+                                song.track.album.id ? <Link to={`/album/${song.track.album.id}`}><span>{song.track.album.name}</span></Link> : 
+                                <span>{song.track.album.name}</span>
+                            }
+                            </td>
                             <td>{song.added_at.split('T')[0].split('-').reverse().join('-')}</td>
                             <td>{`${Math.trunc(Math.ceil(song.track.duration_ms/1000)/60)}:${pad(Math.ceil(song.track.duration_ms/1000)%60)}`}</td>
                         </tr>)

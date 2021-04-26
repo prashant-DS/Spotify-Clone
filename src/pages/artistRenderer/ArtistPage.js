@@ -14,6 +14,7 @@ import {
     fetchArtistTracks,
     fetchArtistAlbums,
     fetchArtistRelatedArtists,
+    fetchUserIsFollowingArtist,
 } from '../../state/ducks/userCollection';
 import singerLogo from '../../assests/singer.svg';
 
@@ -26,6 +27,11 @@ function ArtistPage() {
     const savedartist = useSelector(state=>state.userCollection.savedData.artists);
     const accessToken = useSelector(state=>state.authentication.token.access_token);
     const country = useSelector(state=>state.authentication.userProfile.country);
+    const followingStatus = useSelector(state=>state.userCollection.following.isFollowing[artistID]);
+    useEffect(()=>{
+        if(followingStatus===undefined)
+            dispatch(fetchUserIsFollowingArtist(accessToken,artistID));
+    },[followingStatus,accessToken,artistID])
     
     let artistDetails=savedartist[artistID];
 
@@ -80,9 +86,17 @@ function ArtistPage() {
                         <button title="Play" className={Style.play}>
                             <svg height="28" role="img" width="28" viewBox="0 0 24 24" aria-hidden="true"><polygon points="21.57 12 5.98 3 5.98 21 21.57 12" fill="currentColor"></polygon></svg>
                         </button>
-                        <button title={`Follow ${artistDetails.name}`}>
+                        {
+                            followingStatus?
+                            <button title={`Unfollow ${artistDetails.name}`}>
+                            Following
+                        </button>
+                            :
+                            <button title={`Follow ${artistDetails.name}`}>
                             Follow 
                         </button>
+                        }
+                        
                         <button title="More" className={Style.otherbtn}>
                             <svg role="img" height="32" width="32" viewBox="0 0 32 32"><path d="M5.998 13.999A2 2 0 105.999 18 2 2 0 005.998 14zm10.001 0A2 2 0 1016 18 2 2 0 0016 14zm10.001 0A2 2 0 1026.001 18 2 2 0 0026 14z" fill="currentColor"></path></svg>
                         </button>

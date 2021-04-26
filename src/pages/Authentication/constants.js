@@ -13,5 +13,7 @@ export const scopes=[
     'user-read-email',
 
     'playlist-read-private',
-    'user-follow-read'
+    'user-follow-read',
+
+    'user-library-read',
 ]
