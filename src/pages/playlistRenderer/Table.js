@@ -1,5 +1,7 @@
 import React, { useRef,useEffect } from 'react'
 import {Link} from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import defaultAlbumImage from '../../assests/album.svg';
 import Style from './Style.module.scss';
@@ -60,7 +62,14 @@ function Table({songs}) {
                             <td></td>
                             <td>
                                 <div className={Style.titlediv}>
-                                    <img src={song.track.album.images.length>0 ? song.track.album.images[song.track.album.images.length -1].url : defaultAlbumImage} width="40px" height="40px" draggable="false" alt=""/>
+                                    <LazyLoadImage 
+                                        src={song.track.album.images.length>0 ? song.track.album.images[song.track.album.images.length -1].url : defaultAlbumImage} 
+                                        width="40px" 
+                                        height="40px"
+                                        alt=""
+                                        placeholderSrc={defaultAlbumImage}
+                                        effect='blur'
+                                    />
                                     <div>
                                         <span className={Style.highlighted}>{song.track.name}</span>
                                         <br/>

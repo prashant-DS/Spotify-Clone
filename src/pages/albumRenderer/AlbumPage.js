@@ -2,6 +2,8 @@ import React,{useEffect,useRef} from 'react'
 import {useSelector,useDispatch} from 'react-redux';
 import { useParams,Link } from 'react-router-dom';
 import { average } from "color.js";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
  import baseStyle from '../Style.module.scss';
  import Style from './Style.module.scss';
@@ -13,7 +15,7 @@ import {
 } from '../../state/ducks/userCollection';
 import Table from './Table';
 import loadingImg from '../../assests/loading.svg';
-
+import singerLogo from '../../assests/singer.svg';
 import{setHeaderBgcolor} from '../../state/ducks/metadata';
 
 function AlbumPage() {
@@ -50,7 +52,7 @@ function AlbumPage() {
     const buttondivRef = useRef(null);
 
     const setbgcolor = async()=>{
-        const colArr = await average(imageRef.current);
+        const colArr = await average(imageRef.current.props.src);
         const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
         dispatch(setHeaderBgcolor(col));
         introdivRef.current.style.backgroundColor = col;
@@ -62,7 +64,15 @@ function AlbumPage() {
             {
                 albumDetails===undefined ? <img className={baseStyle.loading} src={loadingImg} alt='Loading'/> :<>
                     <div className={Style.introdiv} ref={introdivRef}>
-                        <img src={albumDetails.images[2].url} alt={albumDetails.name} ref={imageRef} onLoad={setbgcolor} crossOrigin="anonymous"/>
+                        <LazyLoadImage 
+                            height='90%'
+                            src={albumDetails.images[2].url} 
+                            alt={albumDetails.name} 
+                            ref={imageRef} 
+                            afterLoad={setbgcolor}
+                            placeholderSrc={singerLogo}
+                            effect='blur'
+                        />
                         <div>
                             <p className={Style.boldextra}>{albumDetails.album_type}</p>
                             <h1 className={Style.name}>{albumDetails.name}</h1>

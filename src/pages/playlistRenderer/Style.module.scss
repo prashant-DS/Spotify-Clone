@@ -8,7 +8,7 @@
     background-image: linear-gradient(rgba(18,18,18,0), rgba(18,18,18, 0.7));
 
     img{
-        height: 90%;
+        height: 100%;
         object-fit: fill;
         box-shadow: 0px 4px 45px 0px rgba(0, 0, 0, 0.5);
     }
@@ -99,6 +99,7 @@
 
         .sticked th{
             background-color: #181818;
+            z-index: 1;
         }
         
 
@@ -123,14 +124,12 @@
         }
 
         .titlediv{
-            img{
-                margin-right:20px;
-            }
             div{
                 display: inline-block;
                 max-width: calc(100% - 60px);
                 overflow: hidden;
                 text-overflow: ellipsis;
+                margin-left: 20px;
             }
         }
 

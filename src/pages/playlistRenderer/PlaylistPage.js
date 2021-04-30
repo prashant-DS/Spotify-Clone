@@ -2,6 +2,8 @@ import React,{useEffect,useRef} from 'react'
 import {useSelector,useDispatch} from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { average } from "color.js";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 
 import baseStyle from '../Style.module.scss';
@@ -14,7 +16,7 @@ import {
 } from '../../state/ducks/userCollection';
 import Table from './Table';
 import loadingImg from '../../assests/loading.svg';
-
+import singerLogo from '../../assests/singer.svg';
 import{setHeaderBgcolor} from '../../state/ducks/metadata';
 
 function PlaylistPage() {
@@ -50,7 +52,8 @@ function PlaylistPage() {
     const buttondivRef = useRef(null);
 
     const setbgcolor = async()=>{
-        const colArr = await average(imageRef.current);
+        console.error('bgColor',imageRef)
+        const colArr = await average(imageRef.current.props.src);
         const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
         dispatch(setHeaderBgcolor(col));
         introdivRef.current.style.backgroundColor = col;
@@ -62,7 +65,15 @@ function PlaylistPage() {
             {
                 playlistDetails===undefined ? <img className={baseStyle.loading} src={loadingImg} alt='loading'/> :<>
                     <div className={Style.introdiv} ref={introdivRef}>
-                        <img src={playlistDetails.images[0].url} alt={playlistDetails.name} ref={imageRef} onLoad={setbgcolor} crossOrigin="anonymous"/>
+                        <LazyLoadImage 
+                            height='90%'
+                            src={playlistDetails.images[0].url} 
+                            alt={playlistDetails.name} 
+                            ref={imageRef} 
+                            afterLoad={setbgcolor} 
+                            placeholderSrc={singerLogo}
+                            effect='blur'
+                        />
                         <div>
                             <p className={Style.boldextra}>PLAYLIST</p>
                             <h1 className={Style.name}>{playlistDetails.name}</h1>

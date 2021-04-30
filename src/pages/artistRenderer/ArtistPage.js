@@ -2,6 +2,8 @@ import React,{useEffect,useRef} from 'react';
 import {useSelector,useDispatch} from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { average } from "color.js";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 import loadingImg from '../../assests/loading.svg';
 import baseStyle from '../Style.module.scss';
@@ -62,7 +64,7 @@ function ArtistPage() {
     const buttondivRef = useRef(null);
 
     const setbgcolor = async()=>{
-        const colArr = await average(imageRef.current);
+        const colArr = await average(imageRef.current.props.src);
         if(colArr)
         {
             const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
@@ -78,7 +80,15 @@ function ArtistPage() {
             {
                 artistDetails===undefined ? <img className={baseStyle.loading} src={loadingImg} alt='Loading'/> :<>
                     <div className={Style.introdiv} ref={introdivRef}>
-                        <img src={artistDetails.images.length>0?artistDetails.images[0].url:singerLogo} alt={artistDetails.name} ref={imageRef} onLoad={setbgcolor} crossOrigin="anonymous"/>
+                        <LazyLoadImage 
+                            height='90%'
+                            src={artistDetails.images.length>0?artistDetails.images[0].url:singerLogo} 
+                            alt={artistDetails.name} 
+                            ref={imageRef} 
+                            afterLoad={setbgcolor}
+                            placeholderSrc={singerLogo}
+                            effect='blur'
+                        />
                         <div>
                             <h1>{artistDetails.name}</h1>
                             <span>{`${artistDetails.followers.total} followers`}</span>
