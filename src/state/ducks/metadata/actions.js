@@ -36,16 +36,23 @@ export const setSearchDetailsData = (searchTerm,type,data) =>{
 
 export const fetchSearchDetailsData = (searchTerm,type,country,accessToken,limit=5,offset=0) =>{ 
     return (dispatch) => {
-        axios.get(`https://api.spotify.com/v1/search?q=${searchTerm.replace(/ /g,"%20")}&type=${type}&country=${country}&limit=${limit}&offset=${offset}`,{
+        return new Promise((resolve,reject)=>{
+            axios.get(`https://api.spotify.com/v1/search?q=${searchTerm.replace(/ /g,"%20")}&type=${type}&country=${country}&limit=${limit}&offset=${offset}`,{
             'headers': { 
                 'Authorization': `Bearer ${accessToken}`
             } 
-        }).then(res=>{
-            // console.log(res);
-            if( Object.values(res.data)[0].items.length!==0)
-                dispatch(setSearchDetailsData(searchTerm,type,Object.values(res.data)[0].items));
-        }).catch(err=>{
-            console.log(err);
+            }).then(res=>{
+                // console.log(res);
+                if( Object.values(res.data)[0].items.length!==0){
+                    dispatch(setSearchDetailsData(searchTerm,type,Object.values(res.data)[0].items));
+                    resolve(true);
+                }
+                else
+                    resolve(false);
+            }).catch(err=>{
+                console.log(err);
+            })
         })
+        
     }
 }
