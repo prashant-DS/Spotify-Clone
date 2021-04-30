@@ -3,8 +3,12 @@
     width: 100%;
     position: relative;
 
-    button:focus,button:hover{
-        outline: 0;
-        background-color: hsla(0,0%,100%,.1);        
+    button{
+        transition: background-color .3s ease;
+        &:focus,&:hover{
+            outline: 0;
+            background-color: hsla(0,0%,100%,.1);
+        }
+                
     }
 }

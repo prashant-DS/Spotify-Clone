@@ -9,7 +9,7 @@ import ArtistAlbum from './artistRenderer/ArtistAlbum'
 import ArtistRelatedArtists from './artistRenderer/ArtistRelatedArtists';
 import SearchDefaultPage from './SearchRenderer/SearchDefaultPage';
 import SearchDetailsPage from './SearchRenderer/SearchDetailsPage'
-import UserPlayLists from './userCollectionRenderer/UserPlayLists';
+import UserLibrary from './userCollectionRenderer/UserLibrary';
 
 
 export { 
@@ -24,5 +24,5 @@ export {
     ArtistRelatedArtists,
     SearchDefaultPage,
     SearchDetailsPage,
-    UserPlayLists,
+    UserLibrary,
 };

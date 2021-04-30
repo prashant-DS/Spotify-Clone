@@ -147,9 +147,9 @@ export const fetchUserPlaylistCollection = (accessToken,offset=0,limit=20) =>{
     }
 }
 
-export const fetchUserFollowingArtists = (accessToken,lastFetchedArtistID='',limit=20) =>{
+export const fetchUserFollowingArtists = (accessToken,lastFetchedArtistID=undefined,limit=20) =>{
     let afterQuery='';
-    if(lastFetchedArtistID!=='')
+    if(lastFetchedArtistID!==undefined)
         afterQuery=`&after=${lastFetchedArtistID}`;
 
     return (dispatch)=>{

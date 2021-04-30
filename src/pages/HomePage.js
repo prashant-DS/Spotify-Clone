@@ -25,16 +25,15 @@ function HomePage() {
     const browse = useSelector(state=>state.userCollection.browse);
     const savedPlaylists = useSelector(state=>state.userCollection.savedData.playlists);
     
-
+    useEffect(() => {
+        if(userPlaylists.length===0)
+            dispatch(fetchUserPlaylistCollection(accessToken));
+    }, [accessToken,userPlaylists])
 
     useEffect(() => {
-        dispatch(fetchUserPlaylistCollection(accessToken,userPlaylists.length));
-        let len=userFollowingArtists.length;
-        if(len===0)
+        if(userFollowingArtists.length===0)
             dispatch(fetchUserFollowingArtists(accessToken));
-        else
-            dispatch(fetchUserFollowingArtists(accessToken,userFollowingArtists[len-1].id));
-    }, [accessToken])
+    }, [accessToken,userFollowingArtists])
 
     useEffect(()=>{
         if(country){

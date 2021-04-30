@@ -44,16 +44,16 @@ function Header() {
             
             <div className={Style.historyButtons}>
                 <button title="Go back" onClick={()=>history.goBack()}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill-rule="evenodd" fill="currentcolor" clip-rule="evenodd"><path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fillRule="evenodd" fill="currentcolor" clipRule="evenodd"><path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/></svg>
                 </button>
                 <button title="Go forward" onClick={()=>history.goForward()}>
-                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill-rule="evenodd" fill="currentcolor" clip-rule="evenodd"><path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/></svg>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fillRule="evenodd" fill="currentcolor" clipRule="evenodd"><path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/></svg>
                 </button>
                 <div className={Style.searchInput} style={{display:showSearch?'inline-flex':'none'}}>
                     <span>
-                        <svg height="24" role="img" width="24" viewBox="0 0 512 512" class="_08f8133e4f703ce562826348eb158f87-scss" aria-hidden="true"><path d="M349.714 347.937l93.714 109.969-16.254 13.969-93.969-109.969q-48.508 36.825-109.207 36.825-36.826 0-70.476-14.349t-57.905-38.603-38.603-57.905-14.349-70.476 14.349-70.476 38.603-57.905 57.905-38.603 70.476-14.349 70.476 14.349 57.905 38.603 38.603 57.905 14.349 70.476q0 37.841-14.73 71.619t-40.889 58.921zM224 377.397q43.428 0 80.254-21.461t58.286-58.286 21.461-80.254-21.461-80.254-58.286-58.285-80.254-21.46-80.254 21.46-58.285 58.285-21.46 80.254 21.46 80.254 58.285 58.286 80.254 21.461z" fill="currentColor"></path></svg>
+                        <svg height="24" role="img" width="24" viewBox="0 0 512 512" className="_08f8133e4f703ce562826348eb158f87-scss" aria-hidden="true"><path d="M349.714 347.937l93.714 109.969-16.254 13.969-93.969-109.969q-48.508 36.825-109.207 36.825-36.826 0-70.476-14.349t-57.905-38.603-38.603-57.905-14.349-70.476 14.349-70.476 38.603-57.905 57.905-38.603 70.476-14.349 70.476 14.349 57.905 38.603 38.603 57.905 14.349 70.476q0 37.841-14.73 71.619t-40.889 58.921zM224 377.397q43.428 0 80.254-21.461t58.286-58.286 21.461-80.254-21.461-80.254-58.286-58.285-80.254-21.46-80.254 21.46-58.285 58.285-21.46 80.254 21.46 80.254 58.285 58.286 80.254 21.461z" fill="currentColor"></path></svg>
                     </span>
-                    <input type='text' maxlength="80" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Artists, songs, or podcasts" onChange={(e)=>{
+                    <input type='text' maxLength="80" autoCorrect="off" autoCapitalize="off" spellCheck="false" placeholder="Artists, songs, or podcasts" onChange={(e)=>{
                         // console.log('inp',e.target.value);
                         setDebouncedSearchTerm(e.target.value);
                         

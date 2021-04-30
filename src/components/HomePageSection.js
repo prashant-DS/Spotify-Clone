@@ -64,6 +64,7 @@ function HomePageSection({title,description='',items,isTitleALink=true,titleLink
                             secondary=item.description
 
                         return <FolderCard 
+                            key={item.id}
                             imageBorderRadius={item.type==='artist' && imageurl!==singerLogo?'50%':'0px'}
                             imageurl={imageurl} 
                             name={item.name} 
