@@ -1,5 +1,6 @@
 import {
     SET_USER_PLAYLIST_COLLECTION,
+    SET_USER_SAVED_ALBUMS,
     SET_USER_FOLLOWING_ARTISTS,
     SET_USER_ISFOLLOWING_STATUS,
     SET_USER_BROWSE_NEWRELEASES,
@@ -15,6 +16,7 @@ import {
 
 const initialState = {
     playlists:[],
+    albums:[],
     following:{
         artists:[],
         isFollowing:{},
@@ -37,11 +39,23 @@ const userCollectionReducer = (state=initialState,action)=>{
     let oldState={...state};
     switch(action.type){
         case SET_USER_PLAYLIST_COLLECTION:
-            oldState.playlists=[...oldState.playlists, ...action.payload.playlists];
+            if(action.payload.overwrite)
+            oldState.playlists=[...action.payload.playlists];
+            else
+                oldState.playlists=[...oldState.playlists, ...action.payload.playlists];
+            return oldState;
+        case SET_USER_SAVED_ALBUMS:
+            if(action.payload.overwrite)
+                oldState.albums=[...action.payload.albums];
+            else
+                oldState.albums = [...oldState.alums,...action.payload.albums];
             return oldState;
         case SET_USER_FOLLOWING_ARTISTS:
             oldState.following={...oldState.following};
-            oldState.following.artists=[...oldState.following.artists, ...action.payload.artists];
+            if(action.payload.overwrite)
+                oldState.following.artists=[...action.payload.artists];
+            else
+                oldState.following.artists=[...oldState.following.artists, ...action.payload.artists];
             return oldState;
         case SET_USER_ISFOLLOWING_STATUS:
             oldState.following={...oldState.following};

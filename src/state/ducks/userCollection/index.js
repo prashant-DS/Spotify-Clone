@@ -1,6 +1,7 @@
 // action creaters
 import {
     fetchUserPlaylistCollection,
+    fetchUserSavedAlbums,
     fetchUserFollowingArtists,
     fetchUserIsFollowingPlaylist,
     fetchUserIsFollowingAlbum,
@@ -38,6 +39,7 @@ export{
     getRecommendationSeed,
     
     fetchUserPlaylistCollection,
+    fetchUserSavedAlbums,
     fetchUserFollowingArtists,
     fetchUserIsFollowingPlaylist,
     fetchUserIsFollowingAlbum,
