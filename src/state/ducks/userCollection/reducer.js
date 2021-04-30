@@ -48,7 +48,7 @@ const userCollectionReducer = (state=initialState,action)=>{
             if(action.payload.overwrite)
                 oldState.albums=[...action.payload.albums];
             else
-                oldState.albums = [...oldState.alums,...action.payload.albums];
+                oldState.albums = [...oldState.albums,...action.payload.albums];
             return oldState;
         case SET_USER_FOLLOWING_ARTISTS:
             oldState.following={...oldState.following};

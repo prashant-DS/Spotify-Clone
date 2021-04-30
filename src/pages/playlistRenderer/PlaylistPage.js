@@ -9,6 +9,8 @@ import Style from './Style.module.scss';
 import {
     fetchPlaylist,
     fetchUserIsFollowingPlaylist,
+    followPlaylist,
+    unFollowPlaylist,
 } from '../../state/ducks/userCollection';
 import Table from './Table';
 import loadingImg from '../../assests/loading.svg';
@@ -16,8 +18,6 @@ import loadingImg from '../../assests/loading.svg';
 import{setHeaderBgcolor} from '../../state/ducks/metadata';
 
 function PlaylistPage() {
-
-    
 
     const {playlistID} = useParams();
     const dispatch = useDispatch();
@@ -62,7 +62,7 @@ function PlaylistPage() {
             {
                 playlistDetails===undefined ? <img className={baseStyle.loading} src={loadingImg} alt='loading'/> :<>
                     <div className={Style.introdiv} ref={introdivRef}>
-                        <img src={playlistDetails.images[0].url} alt={playlistDetails.name} ref={imageRef} onLoad={setbgcolor} crossorigin="anonymous"/>
+                        <img src={playlistDetails.images[0].url} alt={playlistDetails.name} ref={imageRef} onLoad={setbgcolor} crossOrigin="anonymous"/>
                         <div>
                             <p className={Style.boldextra}>PLAYLIST</p>
                             <h1 className={Style.name}>{playlistDetails.name}</h1>
@@ -83,11 +83,15 @@ function PlaylistPage() {
                         </button>
                         {
                             followingStatus?
-                            <button title="Remove From Your Library" className={Style.otherbtn}>
+                            <button title="Remove From Your Library" className={Style.otherbtn} onClick={()=>{
+                                dispatch(unFollowPlaylist(accessToken,playlistID));
+                            }}>
                                 <svg role="img" height="32" width="32" viewBox="0 0 32 32"><path d="M27.319 5.927a7.445 7.445 0 00-10.02-.462s-.545.469-1.299.469c-.775 0-1.299-.469-1.299-.469a7.445 7.445 0 00-10.02 10.993l9.266 10.848a2.7 2.7 0 004.106 0l9.266-10.848a7.447 7.447 0 000-10.531z" fill="#1db954"></path></svg>
                             </button>
                             :
-                            <button title="Add to Your Library" className={Style.otherbtn}>
+                            <button title="Add to Your Library" className={Style.otherbtn} onClick={()=>{
+                                dispatch(followPlaylist(accessToken,playlistID));
+                            }}>
                                 <svg role="img" height="32" width="32" viewBox="0 0 32 32"><path d="M27.672 5.573a7.904 7.904 0 00-10.697-.489c-.004.003-.425.35-.975.35-.564 0-.965-.341-.979-.354a7.904 7.904 0 00-10.693.493A7.896 7.896 0 002 11.192c0 2.123.827 4.118 2.301 5.59l9.266 10.848a3.196 3.196 0 004.866 0l9.239-10.819A7.892 7.892 0 0030 11.192a7.896 7.896 0 00-2.328-5.619zm-.734 10.56l-9.266 10.848c-.837.979-2.508.979-3.346 0L5.035 16.104A6.9 6.9 0 013 11.192 6.9 6.9 0 015.035 6.28a6.935 6.935 0 014.913-2.048 6.89 6.89 0 014.419 1.605A2.58 2.58 0 0016 6.434c.914 0 1.555-.53 1.619-.585a6.908 6.908 0 019.346.431C28.277 7.593 29 9.337 29 11.192s-.723 3.6-2.062 4.941z" fill="currentColor"></path></svg>
                             </button>
                         }

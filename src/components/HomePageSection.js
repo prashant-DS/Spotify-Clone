@@ -43,16 +43,12 @@ function HomePageSection({title,description='',items,isTitleALink=true,titleLink
             <div className={[Style.cardsContainer,items.length===5 && Style.coverFullSpace].join(' ')}>
                 {
                     items.map(item=>{
-                        let imageurl = '';
-                        if(item.type==='album' || item.type==='playlist' || item.type==='artist'){
-                            if(item.images.length === 0)
-                                imageurl=singerLogo
-                            else
-                                imageurl = item.images[0].url;
-                        }
-                        else if(item.type==='track')
+                        let imageurl=singerLogo
+                        if(item.images && item.images.length>0)
+                            imageurl = item.images[0].url;
+                        else if(item.album && item.album.images && item.album.images.length>0)
                             imageurl=item.album.images[0].url;
-                        else                                                // categories
+                        else if(item.icons && item.icons.length>0)                                                // categories
                              imageurl = item.icons[0].url;
 
 
@@ -72,6 +68,8 @@ function HomePageSection({title,description='',items,isTitleALink=true,titleLink
                             click={item.type==='track'?undefined:()=>{
                                 if(item.type)
                                     history.push(`/${item.type}/${item.id}`)
+                                else if(item.album)                 // for user saved albums
+                                    history.push(`/album/${item.album.id}`);
                                 else
                                     history.push(`/categories/${item.id}`);
                             }}

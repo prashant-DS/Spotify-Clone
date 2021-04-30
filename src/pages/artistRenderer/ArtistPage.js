@@ -15,6 +15,8 @@ import {
     fetchArtistAlbums,
     fetchArtistRelatedArtists,
     fetchUserIsFollowingArtist,
+    followArtist,
+    unFollowArtist,
 } from '../../state/ducks/userCollection';
 import singerLogo from '../../assests/singer.svg';
 
@@ -76,7 +78,7 @@ function ArtistPage() {
             {
                 artistDetails===undefined ? <img className={baseStyle.loading} src={loadingImg} alt='Loading'/> :<>
                     <div className={Style.introdiv} ref={introdivRef}>
-                        <img src={artistDetails.images.length>0?artistDetails.images[0].url:singerLogo} alt={artistDetails.name} ref={imageRef} onLoad={setbgcolor} crossorigin="anonymous"/>
+                        <img src={artistDetails.images.length>0?artistDetails.images[0].url:singerLogo} alt={artistDetails.name} ref={imageRef} onLoad={setbgcolor} crossOrigin="anonymous"/>
                         <div>
                             <h1>{artistDetails.name}</h1>
                             <span>{`${artistDetails.followers.total} followers`}</span>
@@ -88,11 +90,11 @@ function ArtistPage() {
                         </button>
                         {
                             followingStatus?
-                            <button title={`Unfollow ${artistDetails.name}`}>
+                            <button title={`Unfollow ${artistDetails.name}`} onClick={()=>dispatch(unFollowArtist(accessToken,artistID))}>
                             Following
                         </button>
                             :
-                            <button title={`Follow ${artistDetails.name}`}>
+                            <button title={`Follow ${artistDetails.name}`} onClick={()=>dispatch(followArtist(accessToken,artistID))}>
                             Follow 
                         </button>
                         }

@@ -152,6 +152,7 @@ export const fetchUserPlaylistCollection = (accessToken,offset=0,limit=20,overwr
                 // console.log(res);
                 if(res.data.items.length > 0){
                     dispatch(setUserPlaylistCollection(res.data.items,overwrite));
+                    res.data.items.forEach(val=>dispatch(setUserIsFollowingStatus(val.id,true)))
                     resolve(true)
                 }
                 else
@@ -171,9 +172,10 @@ export const fetchUserSavedAlbums = (accessToken,offset=0,limit=20,overwrite=fal
                     'Authorization': `Bearer ${accessToken}`
                 } 
             }).then(res=>{
-                // console.log(res);
+                // console.log('res',res);
                 if(res.data.items.length > 0){
                     dispatch(setUserSavedAlums(res.data.items,overwrite));
+                    res.data.items.forEach(val=>dispatch(setUserIsFollowingStatus(val.album.id,true)))
                     resolve(true)
                 }
                 else
@@ -200,6 +202,7 @@ export const fetchUserFollowingArtists = (accessToken,limit=20,overwrite=false,l
                 // console.log(res.data.artists.items);
                 if(res.data.artists.items.length > 0){
                     dispatch(setUserFollowingArtists(res.data.artists.items,overwrite));
+                    res.data.artists.items.forEach(val=>dispatch(setUserIsFollowingStatus(val.id,true)))
                     resolve(true)
                 }
                 else
@@ -207,6 +210,108 @@ export const fetchUserFollowingArtists = (accessToken,limit=20,overwrite=false,l
             }).catch(err=>{
                 console.log(err);   
             })
+        })
+    }
+}
+
+export const followPlaylist = (accessToken,playlistID)=>{
+    return dispatch =>{
+        axios(`https://api.spotify.com/v1/playlists/${playlistID}/followers`,{
+            method:'PUT',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('success',res);
+            dispatch(setUserIsFollowingStatus(playlistID,true));
+            dispatch(fetchUserPlaylistCollection(accessToken,0,20,true));
+        }).catch(err=>{
+            // console.log('failure',err);
+        })
+    }
+}
+
+export const unFollowPlaylist = (accessToken,playlistID)=>{
+    return dispatch =>{
+        axios(`https://api.spotify.com/v1/playlists/${playlistID}/followers`,{
+            method:'DELETE',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('success',res);
+            dispatch(setUserIsFollowingStatus(playlistID,false));
+            dispatch(fetchUserPlaylistCollection(accessToken,0,20,true));
+        }).catch(err=>{
+            // console.log('failure',err);
+        })
+    }
+}
+
+export const followAlbum = (accessToken,albumID)=>{
+    return dispatch =>{
+        axios(`https://api.spotify.com/v1/me/albums?ids=${albumID}`,{
+            method:'PUT',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('success',res);
+            dispatch(setUserIsFollowingStatus(albumID,true));
+            dispatch(setUserSavedAlums([],true));
+        }).catch(err=>{
+            // console.log('failure',err);
+        })
+    }
+}
+
+export const unFollowAlbum = (accessToken,albumID)=>{
+    return dispatch =>{
+        axios(`https://api.spotify.com/v1/me/albums?ids=${albumID}`,{
+            method:'DELETE',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('success',res);
+            dispatch(setUserIsFollowingStatus(albumID,false));
+            dispatch(setUserSavedAlums([],true));
+        }).catch(err=>{
+            // console.log('failure',err);
+        })
+    }
+}
+
+export const followArtist = (accessToken,artistID)=>{
+    return dispatch =>{
+        axios(`https://api.spotify.com/v1/me/following?type=artist&ids=${artistID}`,{
+            method:'PUT',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('success',res);
+            dispatch(setUserIsFollowingStatus(artistID,true));
+            dispatch(setUserFollowingArtists([],true));
+        }).catch(err=>{
+            // console.log('failure',err);
+        })
+    }
+}
+
+export const unFollowArtist = (accessToken,artistID)=>{
+    return dispatch =>{
+        axios(`https://api.spotify.com/v1/me/following?type=artist&ids=${artistID}`,{
+            method:'DELETE',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('success',res);
+            dispatch(setUserIsFollowingStatus(artistID,false));
+            dispatch(setUserFollowingArtists([],true));
+        }).catch(err=>{
+            // console.log('failure',err);
         })
     }
 }
