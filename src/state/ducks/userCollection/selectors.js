@@ -19,9 +19,11 @@ export const getRecommendationSeed = (userFollowingArtists,userPlaylists,savedPl
     userPlaylistIDs.forEach(id=>{
         if(savedPlaylists[id]){
             savedPlaylists[id].tracks.items.forEach(item=>{
-                seedTracks.push(item.track.id);
+                if(item.track.id)
+                    seedTracks.push(item.track.id);
                 item.track.artists.forEach(art=>{
-                    seedArtists.push(art.id);
+                    if(art.id)
+                        seedArtists.push(art.id);
                 })
             })
         }

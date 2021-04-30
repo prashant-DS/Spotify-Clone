@@ -86,21 +86,23 @@ function FullScreenSectionPage() {
             targetArray = userFollowingArtists;
             loadMore = loadMoreFollowingArtists;
             break;
+        default:
+            break;
     }
 
     const divref = useRef();
     const [loading,setLoading] = useState(false);
+    const checkToLoadMore = () =>{
+        if(!loading && divref.current.scrollHeight-divref.current.clientHeight-divref.current.scrollTop < 30){
+            loadMore();
+            setLoading(true);
+        }
+    }
     useEffect(()=>{
         if(loading)
             setLoading(false);
         checkToLoadMore();
     },[targetArray])
-    const checkToLoadMore = () =>{
-        if(!loading && divref.current.scrollHeight-divref.current.clientHeight-divref.current.scrollTop < 40){
-            loadMore();
-            setLoading(true);
-        }
-    }
 
     return (
         <div className={Style.FullScreenSectionPage} onScroll={checkToLoadMore} ref={divref}>
