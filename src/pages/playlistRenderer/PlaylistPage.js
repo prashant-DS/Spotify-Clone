@@ -52,7 +52,6 @@ function PlaylistPage() {
     const buttondivRef = useRef(null);
 
     const setbgcolor = async()=>{
-        console.error('bgColor',imageRef)
         const colArr = await average(imageRef.current.props.src);
         const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
         dispatch(setHeaderBgcolor(col));

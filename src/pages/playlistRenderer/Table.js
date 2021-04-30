@@ -58,7 +58,7 @@ function Table({songs}) {
                 </thead>
                 <tbody>
                     {
-                        songs.map(song=><tr>
+                        songs.map(song=><tr key={song.track.id}>
                             <td></td>
                             <td>
                                 <div className={Style.titlediv}>
@@ -74,20 +74,16 @@ function Table({songs}) {
                                         <span className={Style.highlighted}>{song.track.name}</span>
                                         <br/>
                                         {
-                                            song.track.artists.slice(0,-1).map(art=><>
+                                            song.track.artists.slice(0,-1).map(art=><React.Fragment key={art.id}>
                                                 <Link to={`/artist/${art.id}`}>
                                                     <span>{art.name}</span>
                                                 </Link>
                                                 <span>{' , '}</span>
-                                            </>)
+                                            </React.Fragment>)
                                         }
-                                        {
-                                            song.track.artists.slice(-1).map(art=><>
-                                                <Link to={`/artist/${art.id}`}>
-                                                    <span>{art.name}</span>
-                                                </Link>
-                                            </>)
-                                        }
+                                        <Link to={`/artist/${song.track.artists[song.track.artists.length-1].id}`}>
+                                            <span>{song.track.artists[song.track.artists.length-1].name}</span>
+                                        </Link>
                                     </div>
                                     
                                 </div>

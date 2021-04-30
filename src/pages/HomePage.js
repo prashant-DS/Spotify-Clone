@@ -65,6 +65,7 @@ function HomePage() {
         <div className={Style.homePage}>
             {
                 Object.keys(browse).map(key=>browse[key].length!==0 && <HomePageSection
+                    key={key}
                     title={key}
                     items={browse[key].slice(0,5)}
                 />)
