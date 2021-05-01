@@ -36,11 +36,11 @@ export const setUserSavedAlums = (albums,overwrite) =>{
     }
 }
 
-export const setUserSavedTracks = (tracks,overwrite) =>{
+export const setUserSavedTracks = (data,overwrite) =>{
     return{
         type:SET_USER_SAVED_TRACKS,
         payload:{
-            tracks,overwrite
+            data,overwrite
         }
     }
 }
@@ -199,23 +199,17 @@ export const fetchUserSavedAlbums = (accessToken,offset=0,limit=20,overwrite=fal
 
 export const fetchUserSavedTracks = (accessToken,offset=0,limit=20,overwrite=false) =>{
     return (dispatch)=>{
-        return new Promise((resolve,reject)=>{  
-            axios.get(`https://api.spotify.com/v1/me/tracks?limit=${limit}&offset=${offset}`,{
-                'headers': { 
-                    'Authorization': `Bearer ${accessToken}`
-                } 
-            }).then(res=>{
-                // console.log('res',res);
-                if(res.data.items.length > 0){
-                    dispatch(setUserSavedTracks(res.data.items,overwrite));
-                }
-                if(res.data.offset + res.data.items.length === res.data.total)
-                    resolve(false)
-                else
-                    resolve(true);
-            }).catch(err=>{
-                console.log(err);
-            })
+        axios.get(`https://api.spotify.com/v1/me/tracks?limit=${limit}&offset=${offset}`,{
+            'headers': { 
+                'Authorization': `Bearer ${accessToken}`
+            } 
+        }).then(res=>{
+            // console.log('res',res);
+            if(res.data.items.length > 0){
+                dispatch(setUserSavedTracks(res.data,overwrite));
+            }
+        }).catch(err=>{
+            console.log(err);
         })
     }
 }

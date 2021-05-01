@@ -18,7 +18,7 @@ import {
 const initialState = {
     playlists:[],
     albums:[],
-    tracks:[],
+    tracks:{},
     following:{
         artists:[],
         isFollowing:{},
@@ -53,10 +53,11 @@ const userCollectionReducer = (state=initialState,action)=>{
                 oldState.albums = [...oldState.albums,...action.payload.albums];
             return oldState;
         case SET_USER_SAVED_TRACKS:
+            oldState.tracks={...oldState.tracks}
             if(action.payload.overwrite)
-                oldState.tracks=[...action.payload.tracks];
+                oldState.tracks={...action.payload.data};
             else
-                oldState.tracks = [...oldState.tracks,...action.payload.tracks];
+                oldState.tracks.items = [...oldState.tracks.items,...action.payload.data.items];
             return oldState;
         case SET_USER_FOLLOWING_ARTISTS:
             oldState.following={...oldState.following};
