@@ -36,28 +36,30 @@ function PlaylistPage() {
     },[followingStatus,userId,accessToken,playlistID])
     
     let playlistDetails=savedPlaylist[playlistID];
-    console.warn('modified',playlistDetails);
+
+    const introdivRef = useRef(null);
+    const buttondivRef = useRef(null);
+
+    const setbgcolor = async()=>{
+        const colArr = await average(playlistDetails.images[0].url);
+        const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
+        dispatch(setHeaderBgcolor(col));
+        introdivRef.current.style.backgroundColor = col;
+        buttondivRef.current.style.backgroundColor = col;
+    }
 
     useEffect(()=>{
         if(!playlistDetails)
             dispatch(fetchPlaylist(playlistID,country,accessToken));
+        else
+            setbgcolor();
 
         return()=>{
             dispatch(setHeaderBgcolor("rgb(18,18,18)"));
         }
     },[accessToken, country, playlistDetails, playlistID])
 
-    const imageRef = useRef(null);
-    const introdivRef = useRef(null);
-    const buttondivRef = useRef(null);
-
-    const setbgcolor = async()=>{
-        const colArr = await average(imageRef.current.props.src);
-        const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
-        dispatch(setHeaderBgcolor(col));
-        introdivRef.current.style.backgroundColor = col;
-        buttondivRef.current.style.backgroundColor = col;
-    }
+    
 
     return(
         <div className={baseStyle.playlistPage}>
@@ -67,9 +69,7 @@ function PlaylistPage() {
                         <LazyLoadImage 
                             height='90%'
                             src={playlistDetails.images[0].url} 
-                            alt={playlistDetails.name} 
-                            ref={imageRef} 
-                            afterLoad={setbgcolor} 
+                            alt={playlistDetails.name}
                             placeholderSrc={singerLogo}
                             effect='blur'
                         />

@@ -207,6 +207,7 @@ export const fetchUserSavedTracks = (accessToken,offset=0,limit=20,overwrite=fal
             // console.log('res',res);
             if(res.data.items.length > 0){
                 dispatch(setUserSavedTracks(res.data,overwrite));
+                res.data.items.forEach(val=>dispatch(setUserIsFollowingStatus(val.track.id,true)))
             }
         }).catch(err=>{
             console.log(err);
