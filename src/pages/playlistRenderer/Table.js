@@ -7,11 +7,24 @@ import {useSelector,useDispatch} from 'react-redux';
 import defaultAlbumImage from '../../assests/album.svg';
 import Style from './Style.module.scss';
 
+import {
+    fetchUserIsFollowingTrack,
+    followTrack,
+    unFollowTrack,
+} from '../../state/ducks/userCollection';
+
 
 function Table({songs}) {
 
-    songs = songs.filter(song=>song.track.id!==null);
+    const dispatch = useDispatch();
+    const accessToken = useSelector(state=>state.authentication.token.access_token);
     const followingStatus = useSelector(state=>state.userCollection.following.isFollowing);
+
+    useEffect(()=>{
+        let trackIDs = songs.filter(song=>song.track.id!==null && followingStatus[song.track.id]===undefined).map(tr=>tr.track.id);
+        while(trackIDs.length)
+            dispatch(fetchUserIsFollowingTrack(accessToken,trackIDs.splice(0,50)));
+    },[songs])
 
 
     const headerRef = useRef(null);
@@ -22,10 +35,10 @@ function Table({songs}) {
         headerRef.current.parentElement.classList.toggle(`${Style.sticked}`,headerRef.current.getBoundingClientRect().y <= limit);
         
     }
-    let par=undefined;
+    // let par=undefined;
     useEffect(() => {
         containerRef.current.parentElement.addEventListener('scroll',checkHeaderSticky);
-        par=containerRef.current.parentElement;
+        const par=containerRef.current.parentElement;
         return () => {
             par.removeEventListener('scroll',checkHeaderSticky);
         }
@@ -66,7 +79,7 @@ function Table({songs}) {
                 </thead>
                 <tbody>
                     {
-                        songs.map(song=><tr key={song.track.id}>
+                        songs.filter(song=>song.track.id!==null).map(song=><tr key={song.track.id}>
                             <td></td>
                             <td>
                                 <div className={Style.titlediv}>
@@ -105,22 +118,15 @@ function Table({songs}) {
                             <td>{song.added_at.split('T')[0].split('-').reverse().join('-')}</td>
                             <td>
                                 {
-                                    followingStatus[song.track.id]===undefined ? <>
-                                    
-                                    </>
+                                    followingStatus[song.track.id] ? 
+                                    <svg role="img" height="16" width="16" viewBox="0 0 16 16" onClick={()=>{
+                                        dispatch(unFollowTrack(accessToken,song.track.id));
+                                    }}><path fill="none" d="M0 0h16v16H0z"></path><path d="M13.797 2.727a4.057 4.057 0 00-5.488-.253.558.558 0 01-.31.112.531.531 0 01-.311-.112 4.054 4.054 0 00-5.487.253c-.77.77-1.194 1.794-1.194 2.883s.424 2.113 1.168 2.855l4.462 5.223a1.791 1.791 0 002.726 0l4.435-5.195a4.052 4.052 0 001.195-2.883 4.057 4.057 0 00-1.196-2.883z" fill="#1db954"></path></svg>
                                     :
-                                    <>
-                                        {
-                                            followingStatus[song.track.id] ? 
-                                            <svg role="img" height="16" width="16" viewBox="0 0 16 16"><path fill="none" d="M0 0h16v16H0z"></path><path d="M13.797 2.727a4.057 4.057 0 00-5.488-.253.558.558 0 01-.31.112.531.531 0 01-.311-.112 4.054 4.054 0 00-5.487.253c-.77.77-1.194 1.794-1.194 2.883s.424 2.113 1.168 2.855l4.462 5.223a1.791 1.791 0 002.726 0l4.435-5.195a4.052 4.052 0 001.195-2.883 4.057 4.057 0 00-1.196-2.883z" fill="#1db954"></path></svg>
-                                            :
-                                            <svg role="img" height="16" width="16" viewBox="0 0 16 16" onClick={()=>{
-                                                alert('liked');
-                                            }}><path d="M13.764 2.727a4.057 4.057 0 00-5.488-.253.558.558 0 01-.31.112.531.531 0 01-.311-.112 4.054 4.054 0 00-5.487.253A4.05 4.05 0 00.974 5.61c0 1.089.424 2.113 1.168 2.855l4.462 5.223a1.791 1.791 0 002.726 0l4.435-5.195A4.052 4.052 0 0014.96 5.61a4.057 4.057 0 00-1.196-2.883zm-.722 5.098L8.58 13.048c-.307.36-.921.36-1.228 0L2.864 7.797a3.072 3.072 0 01-.905-2.187c0-.826.321-1.603.905-2.187a3.091 3.091 0 012.191-.913 3.05 3.05 0 011.957.709c.041.036.408.351.954.351.531 0 .906-.31.94-.34a3.075 3.075 0 014.161.192 3.1 3.1 0 01-.025 4.403z" fill="currentColor" fillRule="evenodd"></path></svg>
-                                        }
-                                    </>
+                                    <svg style={{visibility:'hidden'}} role="img" height="16" width="16" viewBox="0 0 16 16" onClick={()=>{
+                                        dispatch(followTrack(accessToken,song.track.id));
+                                    }}><path d="M13.764 2.727a4.057 4.057 0 00-5.488-.253.558.558 0 01-.31.112.531.531 0 01-.311-.112 4.054 4.054 0 00-5.487.253A4.05 4.05 0 00.974 5.61c0 1.089.424 2.113 1.168 2.855l4.462 5.223a1.791 1.791 0 002.726 0l4.435-5.195A4.052 4.052 0 0014.96 5.61a4.057 4.057 0 00-1.196-2.883zm-.722 5.098L8.58 13.048c-.307.36-.921.36-1.228 0L2.864 7.797a3.072 3.072 0 01-.905-2.187c0-.826.321-1.603.905-2.187a3.091 3.091 0 012.191-.913 3.05 3.05 0 011.957.709c.041.036.408.351.954.351.531 0 .906-.31.94-.34a3.075 3.075 0 014.161.192 3.1 3.1 0 01-.025 4.403z" fill="currentColor" fillRule="evenodd"></path></svg>
                                 }
-                                
                             </td>
                             <td>{`${Math.trunc(Math.ceil(song.track.duration_ms/1000)/60)}:${pad(Math.ceil(song.track.duration_ms/1000)%60)}`}</td>
                         </tr>)
@@ -132,4 +138,4 @@ function Table({songs}) {
     )
 }
 
-export default Table
+export default React.memo( Table )

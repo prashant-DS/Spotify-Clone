@@ -15,7 +15,7 @@ function Header() {
     const showSearch = useSelector(state=>state.appMetadata.showSearchInHeader);
     const history = useHistory();
 
-    const [debouncedSearchTerm,setDebouncedSearchTerm] = useDebounce('',1000);
+    const [debouncedSearchTerm,setDebouncedSearchTerm] = useDebounce('',700);
     useEffect(()=>{
         if(showSearch)
         history.push(`/search/${debouncedSearchTerm}`);
