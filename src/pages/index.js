@@ -10,7 +10,7 @@ import ArtistRelatedArtists from './artistRenderer/ArtistRelatedArtists';
 import SearchDefaultPage from './SearchRenderer/SearchDefaultPage';
 import SearchDetailsPage from './SearchRenderer/SearchDetailsPage'
 import UserLibrary from './userCollectionRenderer/UserLibrary';
-
+import UserTracks from './userCollectionRenderer/UserTracks';
 
 export { 
     Login,
@@ -25,4 +25,5 @@ export {
     SearchDefaultPage,
     SearchDetailsPage,
     UserLibrary,
+    UserTracks,
 };

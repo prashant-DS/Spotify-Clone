@@ -3,6 +3,7 @@ import axios from 'axios';
 import{
     SET_USER_PLAYLIST_COLLECTION,
     SET_USER_SAVED_ALBUMS,
+    SET_USER_SAVED_TRACKS,
     SET_USER_FOLLOWING_ARTISTS,
     SET_USER_ISFOLLOWING_STATUS,
     SET_USER_BROWSE_NEWRELEASES,
@@ -31,6 +32,15 @@ export const setUserSavedAlums = (albums,overwrite) =>{
         type:SET_USER_SAVED_ALBUMS,
         payload:{
             albums,overwrite
+        }
+    }
+}
+
+export const setUserSavedTracks = (tracks,overwrite) =>{
+    return{
+        type:SET_USER_SAVED_TRACKS,
+        payload:{
+            tracks,overwrite
         }
     }
 }
@@ -180,6 +190,29 @@ export const fetchUserSavedAlbums = (accessToken,offset=0,limit=20,overwrite=fal
                 }
                 else
                     resolve(false);
+            }).catch(err=>{
+                console.log(err);
+            })
+        })
+    }
+}
+
+export const fetchUserSavedTracks = (accessToken,offset=0,limit=20,overwrite=false) =>{
+    return (dispatch)=>{
+        return new Promise((resolve,reject)=>{  
+            axios.get(`https://api.spotify.com/v1/me/tracks?limit=${limit}&offset=${offset}`,{
+                'headers': { 
+                    'Authorization': `Bearer ${accessToken}`
+                } 
+            }).then(res=>{
+                // console.log('res',res);
+                if(res.data.items.length > 0){
+                    dispatch(setUserSavedTracks(res.data.items,overwrite));
+                }
+                if(res.data.offset + res.data.items.length === res.data.total)
+                    resolve(false)
+                else
+                    resolve(true);
             }).catch(err=>{
                 console.log(err);
             })

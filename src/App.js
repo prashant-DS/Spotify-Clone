@@ -14,6 +14,7 @@ import {
     SearchDefaultPage,
     SearchDetailsPage,
     UserLibrary,
+    UserTracks,
 } from './pages';
 import CommonLayout from './common_layout';
 
@@ -56,7 +57,8 @@ function App() {
                     <UserLibrary/>
                 </Route>
                 <Route path='/collection/tracks'>
-                    <CommonLayout/>        
+                    <CommonLayout/>  
+                    <UserTracks/>      
                 </Route>
 
                 <Route path='/playlist/:playlistID'>

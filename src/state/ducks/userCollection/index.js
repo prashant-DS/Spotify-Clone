@@ -2,6 +2,7 @@
 import {
     fetchUserPlaylistCollection,
     fetchUserSavedAlbums,
+    fetchUserSavedTracks,
     fetchUserFollowingArtists,
     fetchUserIsFollowingPlaylist,
     fetchUserIsFollowingAlbum,
@@ -46,6 +47,7 @@ export{
     
     fetchUserPlaylistCollection,
     fetchUserSavedAlbums,
+    fetchUserSavedTracks,
     fetchUserFollowingArtists,
     fetchUserIsFollowingPlaylist,
     fetchUserIsFollowingAlbum,

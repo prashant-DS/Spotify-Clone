@@ -3,7 +3,7 @@ import baseStyle from '../Style.module.scss';
 import {useSelector,useDispatch} from 'react-redux';
 
 import HomePageSection from '../../components/HomePageSection';
-import myStyle from '../SearchRenderer/Style.module.scss';
+import myStyleForLoadMoreBtn from '../SearchRenderer/Style.module.scss';
 
 import {
     fetchUserPlaylistCollection,
@@ -47,7 +47,7 @@ function UserLibrary() {
                 playlists.length>0 && <> 
                 <HomePageSection title='YourSavedPlaylists' items={playlists} isTitleALink={false}/>
                 {
-                    showLoadMorePlaylistBtn && <button className={myStyle.loadMoreBtn} onClick={(event)=>{
+                    showLoadMorePlaylistBtn && <button className={myStyleForLoadMoreBtn.loadMoreBtn} onClick={(event)=>{
                         event.target.disabled = true;
                         dispatch(fetchUserPlaylistCollection(accessToken,playlists.length,20)).then(res=>{
                             if(!res)
@@ -63,7 +63,7 @@ function UserLibrary() {
                 artists.length>0 && <>
                 <HomePageSection title='followingArtists' items={artists} isTitleALink={false}/>
                 {
-                    shoeLoadMoreArtistBtn && <button className={myStyle.loadMoreBtn} onClick={(event)=>{
+                    shoeLoadMoreArtistBtn && <button className={myStyleForLoadMoreBtn.loadMoreBtn} onClick={(event)=>{
                         event.target.disabled = true;
                         dispatch(fetchUserFollowingArtists(accessToken,20,false,artists[artists.length-1].id)).then(res=>{
                             if(!res)
@@ -79,7 +79,7 @@ function UserLibrary() {
                 albums.length>0 && <>
                 <HomePageSection title='yourSavedAlbums' items={albums} isTitleALink={false}/>
                 {
-                    showLoadMoreAlbumBtn && <button className={myStyle.loadMoreBtn} onClick={(event)=>{
+                    showLoadMoreAlbumBtn && <button className={myStyleForLoadMoreBtn.loadMoreBtn} onClick={(event)=>{
                         event.target.disabled = true;
                         dispatch(fetchUserSavedAlbums(accessToken,albums.length,20)).then(res=>{
                             if(!res)
