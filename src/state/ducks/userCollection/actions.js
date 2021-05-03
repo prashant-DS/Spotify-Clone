@@ -214,11 +214,16 @@ export const fetchUserSavedTracks = (accessToken,offset=0,limit=20,overwrite=fal
                 'Authorization': `Bearer ${accessToken}`
             } 
         }).then(res=>{
-            // console.log('res',res);
+            console.table('res',res);
             if(res.data.items.length > 0){
                 dispatch(setUserSavedTracks(res.data,overwrite));
-                res.data.items.forEach(val=>dispatch(setUserIsFollowingStatus(val.track.id,true)))
+                let mix={};
+                for(let i=0;i<res.data.items.length;i++){
+                    mix[res.data.items[i].track.id]=true;
+                }
+                dispatch(setUserIsFollowingStatus(0,0,mix));
             }
+            
         }).catch(err=>{
             console.log(err);
         })

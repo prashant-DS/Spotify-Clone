@@ -12,11 +12,11 @@ export default function useCardSetterWrtWidth() {
     const [actualWidth, setActualWidth] = useState(window.innerWidth);
     const [debouncedWidth, setDebouncedWidth] = useState(window.innerWidth);
 
+
   useLayoutEffect(() => {
 
     function updateActualWidth() {
-      if(window.innerWidth !== actualWidth)
-        setActualWidth(window.innerWidth);
+      setActualWidth(window.innerWidth);
     }
 
     window.addEventListener('resize', updateActualWidth);
