@@ -41,7 +41,7 @@ function SearchDetailsPage() {
             dispatch(fetchSearchDetailsData(searchTerm,'album',country,accessToken,5,0));
         }
 
-    },[accessToken, country, dispatch, searchDetailsData, searchTerm])
+    },[accessToken, country, searchDetailsData, searchTerm])
 
     
 

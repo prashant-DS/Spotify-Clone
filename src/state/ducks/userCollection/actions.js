@@ -599,7 +599,7 @@ export const fetchArtist = (artistID,accessToken) =>{
                 'Authorization': `Bearer ${accessToken}`
             } 
         }).then(res=>{
-            console.log(res);
+            // console.log(res);
             dispatch(addSaveddataArtists(artistID,res.data));
         }).catch(err=>{
             console.log(err);

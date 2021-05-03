@@ -24,7 +24,7 @@ function Table({songs}) {
         let trackIDs = songs.filter(song=>song.track.id!==null && followingStatus[song.track.id]===undefined).map(tr=>tr.track.id);
         while(trackIDs.length)
             dispatch(fetchUserIsFollowingTrack(accessToken,trackIDs.splice(0,50)));
-    },[songs])
+    },[accessToken, songs])
 
 
     const headerRef = useRef(null);

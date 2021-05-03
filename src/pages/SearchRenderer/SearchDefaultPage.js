@@ -26,8 +26,7 @@ function SearchDefaultPage() {
     const divref = useRef();
     const [loading,setLoading] = useState(false);
     useEffect(()=>{
-        if(loading)
-            setLoading(false);
+        setLoading(false);
         checkToLoadMore();
     },[browse.categories])
     const checkToLoadMore = () =>{

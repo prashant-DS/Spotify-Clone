@@ -99,8 +99,7 @@ function FullScreenSectionPage() {
         }
     }
     useEffect(()=>{
-        if(loading)
-            setLoading(false);
+        setLoading(false);
         checkToLoadMore();
     },[targetArray])
 

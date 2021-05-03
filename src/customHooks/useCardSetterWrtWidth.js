@@ -26,6 +26,9 @@ export default function useCardSetterWrtWidth() {
 
   useLayoutEffect(() =>{
     // console.error('actual width',actualWidth);
+    // console.error('debounced width',debouncedWidth);
+    // console.error('cards',numberOfCards);
+    // console.error('---------------------------')
 
     const timer = setTimeout(() =>{
       if(actualWidth !== debouncedWidth)
