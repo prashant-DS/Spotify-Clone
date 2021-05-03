@@ -39,8 +39,8 @@ function HomePageSection({title,description='',items,isTitleALink=true,titleLink
 
             
 
-            
-            <div className={[Style.cardsContainer,items.length===5 && Style.coverFullSpace].join(' ')}>
+            {/* <div className={[Style.cardsContainer,items.length===5 && Style.coverFullSpace].join(' ')}>             */}
+            <div className={[Style.cardsContainer].join(' ')}>
                 {
                     items.map(item=>{
                         let imageurl=singerLogo

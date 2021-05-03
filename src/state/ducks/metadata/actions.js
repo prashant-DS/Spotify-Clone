@@ -5,6 +5,7 @@ import{
     SHOW_SEARCH_IN_HEADER,
 
     SET_SEARCH_DETAILS_DATA,
+    SET_NUMBER_OF_CARDS,
 } from './types'
 
 export const setHeaderBgcolor = color =>{
@@ -54,5 +55,14 @@ export const fetchSearchDetailsData = (searchTerm,type,country,accessToken,limit
             })
         })
         
+    }
+}
+
+export const setNumberOfCards = (n) =>{
+    return{
+        type:SET_NUMBER_OF_CARDS,
+        payload:{
+            n
+        }
     }
 }

@@ -159,6 +159,7 @@ export const addSaveddataArtistAlbums = (id,data) =>{
 
 
 export const fetchUserPlaylistCollection = (accessToken,offset=0,limit=20,overwrite=false) =>{
+    limit=Math.min(50,limit);
     return (dispatch)=>{
         return new Promise((resolve,reject)=>{  
             axios.get(`https://api.spotify.com/v1/me/playlists?limit=${limit}&offset=${offset}`,{
@@ -182,6 +183,7 @@ export const fetchUserPlaylistCollection = (accessToken,offset=0,limit=20,overwr
 }
 
 export const fetchUserSavedAlbums = (accessToken,offset=0,limit=20,overwrite=false) =>{
+    limit=Math.min(50,limit);
     return (dispatch)=>{
         return new Promise((resolve,reject)=>{  
             axios.get(`https://api.spotify.com/v1/me/albums?limit=${limit}&offset=${offset}`,{
@@ -205,6 +207,7 @@ export const fetchUserSavedAlbums = (accessToken,offset=0,limit=20,overwrite=fal
 }
 
 export const fetchUserSavedTracks = (accessToken,offset=0,limit=20,overwrite=false) =>{
+    limit=Math.min(50,limit);
     return (dispatch)=>{
         axios.get(`https://api.spotify.com/v1/me/tracks?limit=${limit}&offset=${offset}`,{
             'headers': { 
@@ -223,6 +226,7 @@ export const fetchUserSavedTracks = (accessToken,offset=0,limit=20,overwrite=fal
 }
 
 export const fetchUserFollowingArtists = (accessToken,limit=20,overwrite=false,lastFetchedArtistID=undefined) =>{
+    limit=Math.min(50,limit);
     let afterQuery='';
     if(lastFetchedArtistID!==undefined)
         afterQuery=`&after=${lastFetchedArtistID}`;
@@ -452,6 +456,7 @@ export const fetchUserIsFollowingTrack = (accessToken,trackIds) =>{
 
 
 export const fetchUserBrowseNewReleases = (country,offset,limit,accessToken) =>{
+    limit=Math.min(50,limit);
     return (dispatch)=>{
         axios.get(`https://api.spotify.com/v1/browse/new-releases?country=${country}&limit=${limit}&offset=${offset}`,{
             'headers': { 
@@ -468,6 +473,7 @@ export const fetchUserBrowseNewReleases = (country,offset,limit,accessToken) =>{
 }
 
 export const fetchUserBrowseFeaturedPlaylists = (country,offset,limit,accessToken) =>{
+    limit=Math.min(50,limit);
     return (dispatch)=>{
         axios.get(`https://api.spotify.com/v1/browse/featured-playlists?country=${country}&limit=${limit}&offset=${offset}`,{
             'headers': { 
@@ -484,6 +490,7 @@ export const fetchUserBrowseFeaturedPlaylists = (country,offset,limit,accessToke
 }
 
 export const fetchUserBrowseCategories = (country,offset,limit,accessToken) =>{
+    limit=Math.min(50,limit);
     return (dispatch)=>{
         axios.get(`https://api.spotify.com/v1/browse/categories?country=${country}&limit=${limit}&offset=${offset}`,{
             'headers': { 
@@ -500,6 +507,7 @@ export const fetchUserBrowseCategories = (country,offset,limit,accessToken) =>{
 }
 
 export const fetchUserBrowseRecommendations = (seeds,limit,accessToken,overwrite=false) =>{
+    limit=Math.min(100,limit);
     let selectedIndex = new Set();
     while(selectedIndex.size !==Math.min(5,seeds.length))
         selectedIndex.add(Math.floor(Math.random()*seeds.length));

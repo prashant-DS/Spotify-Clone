@@ -14,11 +14,16 @@ import {
 } from '../state/ducks/userCollection';
 
 import HomePageSection from '../components/HomePageSection';
+import useCardSetterWrtWidth from '../customHooks/useCardSetterWrtWidth';
+import loadingImg from '../assests/loading.svg';
 
 function HomePage() {
 
+    useCardSetterWrtWidth();
+
     const dispatch = useDispatch();
     const accessToken = useSelector(state=>state.authentication.token.access_token);
+    const numberOfCards = useSelector(state=>state.appMetadata.numberOfCards);
     const userFollowingArtists = useSelector(state=>state.userCollection.following.artists);
     const country = useSelector(state=>state.authentication.userProfile.country);
     const userPlaylists = useSelector(state=>state.userCollection.playlists);
@@ -36,15 +41,15 @@ function HomePage() {
     }, [accessToken,userFollowingArtists])
 
     useEffect(()=>{
-        if(country){
-            if(browse.newReleases.length < 5)
-                dispatch(fetchUserBrowseNewReleases(country,browse.newReleases.length,5,accessToken));
-            if(browse.featuredPlaylists.length < 5)
-                dispatch(fetchUserBrowseFeaturedPlaylists(country,browse.featuredPlaylists.length,5,accessToken));
-            if(browse.categories.length < 5)
-                dispatch(fetchUserBrowseCategories(country,browse.categories.length,5,accessToken));
+        if(numberOfCards>0 && country){
+            if(browse.newReleases.length < numberOfCards)
+                dispatch(fetchUserBrowseNewReleases(country,browse.newReleases.length,numberOfCards-browse.newReleases.length,accessToken));
+            if(browse.featuredPlaylists.length < numberOfCards)
+                dispatch(fetchUserBrowseFeaturedPlaylists(country,browse.featuredPlaylists.length,numberOfCards-browse.featuredPlaylists.length,accessToken));
+            if(browse.categories.length < numberOfCards)
+                dispatch(fetchUserBrowseCategories(country,browse.categories.length,numberOfCards-browse.categories.length,accessToken));
         }
-    },[country,accessToken])
+    },[numberOfCards,country,accessToken])
 
     useEffect(() => {
         if(country){
@@ -56,23 +61,32 @@ function HomePage() {
     },[userPlaylists,country])
 
     useEffect(() => {
+        if(numberOfCards>0){
             const recommendationSeeds = getRecommendationSeed(userFollowingArtists,userPlaylists,savedPlaylists);
             if(recommendationSeeds.length>0)
-                dispatch(fetchUserBrowseRecommendations(recommendationSeeds,5,accessToken,true));
-    },[userFollowingArtists,savedPlaylists,userPlaylists])
+                dispatch(fetchUserBrowseRecommendations(recommendationSeeds,numberOfCards,accessToken,true));
+        }
+    },[numberOfCards,userFollowingArtists,savedPlaylists,userPlaylists])
+
 
     return (
         <div className={Style.homePage}>
             {
-                Object.keys(browse).map(key=>browse[key].length!==0 && <HomePageSection
-                    key={key}
-                    title={key}
-                    items={browse[key].slice(0,5)}
-                />)
-            }
+                numberOfCards<=0 ? <img className={Style.loading} src={loadingImg} alt='loading'/>  :   <>
+                {
+                    Object.keys(browse).map(key=>browse[key].length!==0 && <HomePageSection
+                        key={key}
+                        title={key}
+                        items={browse[key].slice(0,numberOfCards)}
+                        />)
+                    }
 
-            <HomePageSection title='bestOfArtists' items={userFollowingArtists.slice(0,5)}/>
+                {
+                userFollowingArtists.length>0 && <HomePageSection title='bestOfArtists' items={userFollowingArtists.slice(0,numberOfCards)}/>
+                }
+            </> 
 
+        }
         </div>
     )
 }

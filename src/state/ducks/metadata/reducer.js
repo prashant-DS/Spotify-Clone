@@ -3,12 +3,14 @@ import{
     SHOW_SEARCH_IN_HEADER,
 
     SET_SEARCH_DETAILS_DATA,
+    SET_NUMBER_OF_CARDS,
 } from './types'
 
 const initialState={
     headerBgColor:"rgb(18,18,18)",
     showSearchInHeader:false,
     searchDetails:{},
+    numberOfCards:0,
 }
 
 const metedataReducer = (state=initialState,action) =>{
@@ -32,6 +34,9 @@ const metedataReducer = (state=initialState,action) =>{
                 oldState.searchDetails[searchTerm][type]=[...oldState.searchDetails[searchTerm][type],...data]
             else
             oldState.searchDetails[searchTerm][type]=[...data]
+            return oldState;
+        case SET_NUMBER_OF_CARDS:
+            oldState.numberOfCards = action.payload.n;
             return oldState;
         default:
             return oldState;

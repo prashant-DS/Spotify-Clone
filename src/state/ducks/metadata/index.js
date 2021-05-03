@@ -3,6 +3,7 @@ import {
     setHeaderBgcolor,
     showSearchInHeader,
     fetchSearchDetailsData,
+    setNumberOfCards,
 } from './actions';
 
 // selectors
@@ -19,5 +20,6 @@ export{
 
     setHeaderBgcolor,
     showSearchInHeader,
-    fetchSearchDetailsData
+    fetchSearchDetailsData,
+    setNumberOfCards,
 }

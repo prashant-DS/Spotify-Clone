@@ -21,9 +21,12 @@ import {
     unFollowArtist,
 } from '../../state/ducks/userCollection';
 import singerLogo from '../../assests/singer.svg';
+import useCardSetterWrtWidth from '../../customHooks/useCardSetterWrtWidth';
 
 
 function ArtistPage() {
+
+    useCardSetterWrtWidth();
 
     const {artistID} = useParams();
     const dispatch = useDispatch();
@@ -31,7 +34,9 @@ function ArtistPage() {
     const savedartist = useSelector(state=>state.userCollection.savedData.artists);
     const accessToken = useSelector(state=>state.authentication.token.access_token);
     const country = useSelector(state=>state.authentication.userProfile.country);
+    const numberOfCards = useSelector(state=>state.appMetadata.numberOfCards);
     const followingStatus = useSelector(state=>state.userCollection.following.isFollowing[artistID]);
+
     useEffect(()=>{
         if(followingStatus===undefined)
             dispatch(fetchUserIsFollowingArtist(accessToken,artistID));
@@ -45,33 +50,40 @@ function ArtistPage() {
             dispatch(setHeaderBgcolor("rgb(18,18,18)"));
         }
 
-    },[artistID, dispatch])
+    },[artistID])
 
     useEffect(()=>{
         if(!artistDetails)
             dispatch(fetchArtist(artistID,accessToken));
         else if(!artistDetails.tracks)
             dispatch(fetchArtistTracks(artistID,country,accessToken));
-        else if(!artistDetails.albums)
-            dispatch(fetchArtistAlbums(artistID,country,accessToken,0,5))
         else if(!artistDetails.artists)
             dispatch(fetchArtistRelatedArtists(artistID,accessToken));
+    },[accessToken, artistDetails, artistID, country])
 
-    },[accessToken, artistDetails, artistID, country, dispatch, savedartist])
+    useEffect(()=>{
+        if(artistDetails && numberOfCards>0){
+            if(!artistDetails.albums)
+                dispatch(fetchArtistAlbums(artistID,country,accessToken,0,numberOfCards))
+            else if(artistDetails.albums.length<numberOfCards)
+                dispatch(fetchArtistAlbums(artistID,country,accessToken,artistDetails.albums.length,numberOfCards-artistDetails.albums.length)) 
+        }
+
+    },[accessToken, artistDetails, artistID, country, numberOfCards])
 
     const imageRef = useRef(null);
     const introdivRef = useRef(null);
     const buttondivRef = useRef(null);
 
     const setbgcolor = async()=>{
-        const colArr = await average(imageRef.current.props.src);
-        if(colArr)
-        {
-            const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
-            dispatch(setHeaderBgcolor(col));
-            introdivRef.current.style.backgroundColor = col;
-            buttondivRef.current.style.backgroundColor = col;
-        }
+    const colArr = await average(imageRef.current.props.src);
+    if(colArr)
+    {
+        const col = `rgb(${colArr[0]},${colArr[1]},${colArr[2]})`;
+        dispatch(setHeaderBgcolor(col));
+        introdivRef.current.style.backgroundColor = col;
+        buttondivRef.current.style.backgroundColor = col;
+    }
         
     }
 
@@ -118,10 +130,10 @@ function ArtistPage() {
                         artistDetails.tracks && <Table songs={artistDetails.tracks}/>
                     }
                     {
-                        artistDetails.albums && artistDetails.albums.length>0 && <HomePageSection title='Albums' items={artistDetails.albums.slice(0,5)} isTitleALink={true} titleLinkTo={`/artist/${artistID}/albums`}/>
+                        artistDetails.albums && artistDetails.albums.length>0 && <HomePageSection title='Albums' items={artistDetails.albums.slice(0,numberOfCards)} isTitleALink={true} titleLinkTo={`/artist/${artistID}/albums`}/>
                     }
                     {
-                        artistDetails.artists && artistDetails.artists.length>0 && <HomePageSection title='You May Like' items={artistDetails.artists.slice(0,5)} isTitleALink={true} titleLinkTo={`/artist/${artistID}/related-artists`}/>   
+                        artistDetails.artists && artistDetails.artists.length>0 && <HomePageSection title='You May Like' items={artistDetails.artists.slice(0,numberOfCards)} isTitleALink={true} titleLinkTo={`/artist/${artistID}/related-artists`}/>   
                     }
 
                     
